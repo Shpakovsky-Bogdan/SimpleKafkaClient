@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  kafka-server:
+    image: spotify/kafka
+    hostname: kafka-server
+    environment:
+      ADVERTISED_HOST: kafka-server
+      ADVERTISED_PORT: 9092
+    volumes:
+    - kafka-volume
+    ports:
+    - 2181:2181
+    - 9092:9092
+  simple-consumer:
+    hostname: simple-consumer
+    build:
+      context: "./Consumer"
+    depends_on:
+      - kafka-server
+  simple-producer:
+    hostname: simple-producer
+    build:
+      context: "./Producer"
+    depends_on:
+      - kafka-server
